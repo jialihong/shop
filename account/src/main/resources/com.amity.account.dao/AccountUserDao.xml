@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.amity.account.dao.AccountUserDao">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.amity.account.pojo.po.AccountUserPO">
+        <id column="id" property="id" />
+        <result column="mobile" property="mobile" />
+        <result column="password" property="password" />
+        <result column="real_name" property="realName" />
+        <result column="id_card" property="idCard" />
+        <result column="create_by" property="createBy" />
+        <result column="create_time" property="createTime" />
+        <result column="last_modified_by" property="lastModifiedBy" />
+        <result column="last_modified_time" property="lastModifiedTime" />
+        <result column="remarks" property="remarks" />
+        <result column="version" property="version" />
+        <result column="enabled" property="enabled" />
+        <result column="disabled_time" property="disabledTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id,
+        mobile,
+        password,
+        real_name,
+        id_card,
+        create_by,
+        create_time,
+        last_modified_by,
+        last_modified_time,
+        remarks,
+        version,
+        enabled,
+        disabled_time
+    </sql>
+
+    <insert id="insert" parameterType="com.amity.account.pojo.po.AccountUserPO" >
+        <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER">
+            select LAST_INSERT_ID()
+        </selectKey>
+        insert into account_user
+        (mobile,
+        password,
+        real_name,
+        id_card,
+        create_by,
+        create_time,
+        last_modified_by,
+        last_modified_time,
+        remarks,
+        version,
+        enabled,
+        disabled_time)
+        values
+        (#{mobile},
+        #{password},
+        #{realName},
+        #{idCard},
+        #{createBy},
+        #{createTime},
+        #{lastModifiedBy},
+        #{lastModifiedTime},
+        #{remarks},
+        #{version},
+        #{enabled},
+        #{disabledTime})
+    </insert>
+
+<!--    <update id="batchUpdate">-->
+<!--        update-->
+<!--        fms_adjust_bill-->
+<!--        set-->
+<!--        audit_by = null,-->
+<!--        audit_date = null,-->
+<!--        last_modified_by = #{op},-->
+<!--        last_modified_date = #{lastModifiedDate},-->
+<!--        audit_status = 4-->
+<!--        where-->
+<!--        enabled = 1-->
+<!--        <if test="list !=null and list.size()>0">-->
+<!--            and id in-->
+<!--            <foreach collection="list" index="0" item="item" open="(" close=")" separator=",">-->
+<!--                #{item.id}-->
+<!--            </foreach>-->
+<!--        </if>-->
+<!--    </update>-->
+
+<!--    <select id="findPage" resultType="com.xiniaoyun.fms.pojo.domain.AdjustBillDO">-->
+<!--        select-->
+<!--        <include refid="Base_Column_List"/>,-->
+<!--        case t1.contain_product when 1 then "是" else "否" end as contain_product_str,-->
+<!--        t2.name as type_name,-->
+<!--        t2.forbidden-->
+<!--        from-->
+<!--        fms_adjust_bill t1-->
+<!--        left join fms_cost_item t2 on t1.type = t2.id-->
+<!--        where-->
+<!--        t1.enabled = 1-->
+<!--        and t1.tenant_code = #{p.tenantCode}-->
+<!--        <if test="p.parentDistributorId!=null and p.parentDistributorId!=''">-->
+<!--            and t1.parent_distributor_id = #{p.parentDistributorId}-->
+<!--        </if>-->
+<!--        <if test="p.billDateRange!=null and p.billDateRange!=''">-->
+<!--            and t1.bill_date between #{p.start} and #{p.end}-->
+<!--        </if>-->
+<!--        <if test="p.clientIdList!=null and p.clientIdList.size()>0">-->
+<!--            and t1.client_id in-->
+<!--            <foreach collection="p.clientIdList" index="0" item="item" open="(" close=")" separator=",">-->
+<!--                #{item}-->
+<!--            </foreach>-->
+<!--        </if>-->
+<!--        <if test="p.processStatus!=null and p.processStatus!=''">-->
+<!--            and t1.audit_status = #{p.processStatus}-->
+<!--        </if>-->
+<!--        <if test="p.financeDepartmentId !=null and p.financeDepartmentId!=''">-->
+<!--            and t1.finance_department_id = #{p.financeDepartmentId}-->
+<!--        </if>-->
+<!--        <if test="p.type!=null">-->
+<!--            and t1.type = #{p.type}-->
+<!--        </if>-->
+<!--        <if test="p.remarks!=null and p.remarks!=''">-->
+<!--            and t1.remarks = #{p.remarks}-->
+<!--        </if>-->
+<!--        <if test="p.code!=null and p.code!=''">-->
+<!--            and t1.code  LIKE CONCAT('%',#{p.code },'%')-->
+<!--        </if>-->
+<!--        <if test="p.outFinanceCode!=null and p.outFinanceCode!=''">-->
+<!--            and t1.out_finance_code LIKE CONCAT('%',#{p.outFinanceCode},'%')-->
+<!--        </if>-->
+<!--        <if test="p.content!=null and p.content!=''">-->
+<!--            and t1.content LIKE CONCAT('%',#{p.content},'%')-->
+<!--        </if>-->
+<!--        <if test="p.auditDateRange!=null and p.auditDateRange!=''">-->
+<!--            and t1.audit_date &gt;=  #{p.auditDateStart}-->
+<!--            and t1.audit_date &lt; (#{p.auditDateEnd} + INTERVAL 24 HOUR)-->
+<!--        </if>-->
+<!--        <if test="p.financeDateRange!=null and p.financeDateRange!=''">-->
+<!--            and t1.finance_date &gt;=  #{p.financeDateStart}-->
+<!--            and t1.finance_date &lt; (#{p.financeDateEnd} + INTERVAL 24 HOUR)-->
+<!--        </if>-->
+<!--        order by t1.last_modified_date desc-->
+<!--    </select>-->
+
+<!--    <select id="findOne" resultType="com.xiniaoyun.fms.pojo.domain.AdjustBillDO">-->
+<!--        select-->
+<!--        <include refid="Base_Column_List"/>,-->
+<!--        t2.name as typeName-->
+<!--        from-->
+<!--        fms_adjust_bill t1-->
+<!--        left join fms_cost_item t2 on t1.type = t2.id-->
+<!--        where-->
+<!--        t1.enabled = 1-->
+<!--        and t1.tenant_code = #{bf.tenantCode}-->
+<!--        and t1.id = #{bf.id}-->
+<!--    </select>-->
+
+
+
+</mapper>
