@@ -1,10 +1,17 @@
 package com.amity.authentication.config;
 
+import com.amity.authentication.service.AmityUserDetailsService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Component;
 
 /**
  * Created by Amity on 2021/1/4 10:44
@@ -27,7 +34,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .httpBasic();
     }
 
-
     /**
      * 人员绑定角色
      * @param auth
@@ -35,12 +41,25 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
      */
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+//        auth
+//                .inMemoryAuthentication()
+//                // 管理员，同事具有 ADMIN,USER权限，可以访问所有资源
+//                .withUser("admin1").password("{noop}admin1").roles("ADMIN","USER")
+//                .and()
+//                // 普通用户，只能访问 /product/**
+//                .withUser("user1").password("{noop}user1").roles("USER");
+
+        /**
+         * 从数据库获取用户和角色
+         */
         auth
-                .inMemoryAuthentication()
-                // 管理员，同事具有 ADMIN,USER权限，可以访问所有资源
-                .withUser("admin1").password("{noop}admin1").roles("ADMIN","USER")
-                .and()
-                // 普通用户，只能访问 /product/**
-                .withUser("user1").password("{noop}user1").roles("USER");
+                .userDetailsService(userDetailsService())   //设置自定义的userDetailsService
+                .passwordEncoder(passwordEncoder());
+
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 }
