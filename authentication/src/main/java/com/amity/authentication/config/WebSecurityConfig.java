@@ -8,10 +8,9 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Component;
+
 
 /**
  * Created by Amity on 2021/1/4 10:44
@@ -19,6 +18,10 @@ import org.springframework.stereotype.Component;
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+
+    @Autowired
+    private AmityUserDetailsService userDetailsService;
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
@@ -53,7 +56,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
          * 从数据库获取用户和角色
          */
         auth
-                .userDetailsService(userDetailsService())   //设置自定义的userDetailsService
+                .userDetailsService(userDetailsService)   //设置自定义的userDetailsService
                 .passwordEncoder(passwordEncoder());
 
     }

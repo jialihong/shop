@@ -1,21 +1,31 @@
-package com.amity.authentication.pojo;
+package com.amity.authentication.pojo.po;
 
 import java.util.List;
 
-public class AccountPO {
+public class AccountUserPO {
 
-    private String username;
+    private Long id;
+
+    private String mobile;
 
     private String password;
 
     private List<String> roleList;
 
-    public String getUsername() {
-        return username;
+    public Long getId() {
+        return id;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getMobile() {
+        return mobile;
+    }
+
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
     }
 
     public String getPassword() {

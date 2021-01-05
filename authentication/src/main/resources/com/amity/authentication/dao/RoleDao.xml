@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.amity.authentication.dao.RoleDao">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.amity.authentication.pojo.po.RolePO">
+        <id column="id" property="id" />
+        <result column="role_name" property="roleName" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id,
+        roleName
+    </sql>
+
+    <select id="searchRoleListByUserId" resultType="com.amity.authentication.pojo.po.RolePO" parameterType="long">
+        SELECT
+            t1.id,
+            t1.role_name as roleName
+        FROM
+            account_role t1
+        INNER JOIN account_user_role t2 ON t1.id = t2.role_id
+        WHERE
+            t2.user_id = #{userId}
+    </select>
+
+
+
+</mapper>
