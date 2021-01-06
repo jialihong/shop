@@ -37,6 +37,7 @@ dependencies {
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: '2.1.10.RELEASE'
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: '2.1.10.RELEASE'
 
+    compile group: 'javax.inject', name: 'javax.inject', version: '1'
 
 
 
@@ -44,4 +45,9 @@ dependencies {
 
 test {
     useJUnitPlatform()
+}
+
+//编译JAVA文件时采用UTF-8
+tasks.withType(JavaCompile) {
+    options.encoding = "UTF-8"
 }

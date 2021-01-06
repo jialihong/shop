@@ -7,6 +7,7 @@ import com.amity.authentication.pojo.po.AccountUserPO;
 import com.amity.authentication.pojo.po.RolePO;
 import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -47,7 +48,7 @@ public class AmityUserDetailsService implements UserDetailsService {
         //2、设置角色
         Collection<GrantedAuthority> grantedAuthorities = new ArrayList<>(16);
         rolePOS.forEach(role -> {
-            GrantedAuthority grantedAuthority = new SimpleGrantedAuthority(role.getRoleName());
+            GrantedAuthority grantedAuthority = new SimpleGrantedAuthority("ROLE_" + role.getRoleName());
             grantedAuthorities.add(grantedAuthority);
         });
 
