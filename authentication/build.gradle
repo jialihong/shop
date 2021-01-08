@@ -37,6 +37,10 @@ dependencies {
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: '2.1.10.RELEASE'
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: '2.1.10.RELEASE'
 
+    // redis
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-redis', version: '2.1.10.RELEASE'
+
+
     compile group: 'javax.inject', name: 'javax.inject', version: '1'
 
 
