@@ -6,5 +6,7 @@ package com.amity.authentication.common;
  */
 public class StringConstant {
 
-    public static final String Token_BEGIN = "Bear ";
+    public static final String Token_BEGIN = "Bearer ";
+
+    public static final String REDIS_KEY_PREFIX = "amity:";
 }

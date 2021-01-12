@@ -5,6 +5,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.util.DigestUtils;
 
+import java.time.LocalDateTime;
+
 /**
  * Created by Amity on 2021/1/6 11:23
  */
@@ -19,7 +21,7 @@ public class TokenProvider {
      * 生成token
      */
     public String createToken() {
-        return StringConstant.Token_BEGIN + DigestUtils.md5DigestAsHex(username.getBytes());
+        return DigestUtils.md5DigestAsHex((username + LocalDateTime.now().toString()).getBytes());
     }
 
     /**
