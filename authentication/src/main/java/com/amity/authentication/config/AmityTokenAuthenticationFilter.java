@@ -1,7 +1,6 @@
 package com.amity.authentication.config;
 
 import com.amity.authentication.common.StringConstant;
-import com.amity.authentication.redis.RedisUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +33,7 @@ public class AmityTokenAuthenticationFilter extends OncePerRequestFilter {
     private final String tokenStart = "Bearer ";
 
     @Resource
-    private RedisUtils redisUtils;
+    private RedisTemplate<String, Object> redisTemplate;
 
     @Autowired
     private UserDetailsService userDetailsService;
@@ -45,9 +44,9 @@ public class AmityTokenAuthenticationFilter extends OncePerRequestFilter {
         if(!StringUtils.isEmpty(header) && header.startsWith(tokenStart)) {
             //从request中获取token
             String token = header.substring(tokenStart.length());
-            if(!StringUtils.isEmpty(token)) {
+            if(!StringUtils.isEmpty(token) && redisTemplate.hasKey(StringConstant.REDIS_KEY_PREFIX + token)) {
                 //获取username
-                String username = (String) redisUtils.get(token);
+                String username = (String) redisTemplate.opsForValue().get(StringConstant.REDIS_KEY_PREFIX + token);
                 UserDetails userDetails = userDetailsService.loadUserByUsername(username);
                 //可以校验token和username是否有效，目前由于token对应username存在redis，都以默认都是有效的
                 UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, userDetails.getPassword(), userDetails.getAuthorities());

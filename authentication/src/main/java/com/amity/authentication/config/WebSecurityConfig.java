@@ -12,6 +12,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 
 /**
@@ -22,14 +23,14 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
+    private AmityTokenAuthenticationFilter amityTokenAuthenticationFilter;
+
+    @Autowired
     private AmityUserDetailsService userDetailsService;
 
-//    @Resource
-//    private List<AuthenticationProvider> authenticationProviderList;
-
-    private AmityAuthTokenConfigurer securityConfigurerAdapter() {
-        return new AmityAuthTokenConfigurer();
-    }
+//    private AmityAuthTokenConfigurer securityConfigurerAdapter() {
+//        return new AmityAuthTokenConfigurer();
+//    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -42,13 +43,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                     .antMatchers("/login/**").permitAll()
-//                .anyRequest().authenticated()
+                //其他所有请求，都需要经过验证
+                .anyRequest().authenticated()
                 .and()
                 //当需要用户登录时候，转到的登录页面   spring security默认提供了一个登录页面，以及登录控制器。
                 .formLogin()
                 .and()
-//                .httpBasic();
-                .apply(securityConfigurerAdapter());
+                .addFilterBefore(amityTokenAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         //无状态  结合token，sso登录
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
