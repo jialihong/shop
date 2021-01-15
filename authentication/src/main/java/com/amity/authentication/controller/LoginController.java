@@ -1,20 +1,18 @@
 package com.amity.authentication.controller;
 
 import com.amity.authentication.common.StringConstant;
-import com.amity.authentication.login.Token;
-import com.amity.authentication.login.TokenProvider;
 import com.amity.authentication.redis.RedisUtils;
 import com.amity.authentication.service.AmityUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.concurrent.TimeUnit;
+import java.time.LocalDateTime;
 
 
 /**
@@ -32,9 +30,6 @@ public class LoginController {
 
     @Autowired
     private RedisUtils redisUtils;
-
-    @Autowired
-    private RedisTemplate redisTemplate;
 
     /**
      * 获取token
@@ -57,8 +52,7 @@ public class LoginController {
         UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
         //5、生成自定义的token
-        TokenProvider tokenProvider = new TokenProvider(userDetails.getUsername());
-        String token = tokenProvider.createToken();
+        String token = DigestUtils.md5DigestAsHex((username + LocalDateTime.now().toString()).getBytes());
         //保存到redis  key--token;value--username
         redisUtils.set(token, userDetails.getUsername(), 1000L);
         return StringConstant.Token_BEGIN + token;

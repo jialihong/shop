@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -70,12 +71,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //                // 普通用户，只能访问 /product/**
 //                .withUser("user1").password("{noop}user1").roles("USER");
 
+//        auth.authenticationProvider(authenticationProvider());
         /**
          * 从数据库获取用户和角色
          */
         auth
                 .userDetailsService(userDetailsService)   //设置自定义的userDetailsService
                 .passwordEncoder(passwordEncoder());
+
 
     }
 
@@ -90,4 +93,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected AuthenticationManager authenticationManager() throws Exception {
         return super.authenticationManager();
     }
+
+    /**
+     * 解决UsernameNotFoundException不抛出的问题
+     * @return
+     */
+//    @Bean
+//    public DaoAuthenticationProvider authenticationProvider() {
+//        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+//        provider.setHideUserNotFoundExceptions(false);
+//        provider.setUserDetailsService(userDetailsService);
+//        provider.setPasswordEncoder(passwordEncoder());
+//        return provider;
+//    }
 }
