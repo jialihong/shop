@@ -39,7 +39,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 //特定的资源只允许特定的角色访问
                 .authorizeRequests()
                     .antMatchers("/product/**").hasRole("USER")
-                    .antMatchers("/admin/**").hasRole("ADMIN")
+                    .antMatchers("/admin/**").hasRole("admin")
 //                    .antMatchers("/login/**").hasAnyRole("ANONYMOUS")
                 .and()
                 .authorizeRequests()
