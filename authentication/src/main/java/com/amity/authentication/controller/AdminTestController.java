@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/admin")
 public class AdminTestController {
 
-//    @PreAuthorize("hasRole('admin')")
+    @PreAuthorize("hasRole('admin')")
     @RequestMapping("/home")
     public String productInfo(){
         return " admin home page ";

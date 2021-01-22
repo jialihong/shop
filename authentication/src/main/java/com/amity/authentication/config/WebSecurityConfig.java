@@ -5,8 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -21,6 +21,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
  */
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
@@ -39,7 +40,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 //特定的资源只允许特定的角色访问
                 .authorizeRequests()
                     .antMatchers("/product/**").hasRole("USER")
-                    .antMatchers("/admin/**").hasRole("admin")
+//                    .antMatchers("/admin/**").hasRole("admin")
 //                    .antMatchers("/login/**").hasAnyRole("ANONYMOUS")
                 .and()
                 .authorizeRequests()
@@ -78,8 +79,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         auth
                 .userDetailsService(userDetailsService)   //设置自定义的userDetailsService
                 .passwordEncoder(passwordEncoder());
-
-
     }
 
     @Bean
